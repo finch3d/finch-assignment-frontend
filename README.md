@@ -1,68 +1,50 @@
+# Frontend Assignment
+
+## Background
+
+Typically an architect wants to change where buildings are located on a lot. In this assignment this is already fixed.
+
+Additionally they also want to change some of the attributes, e.g. height, width and roof angle. In association with this they want to see the meta data of the buildings, e.g. name, height and floor area.
+
+The sample setup is a project that loads building data from a file locally and renders it in a 3d canvas. Some other sample data is also rendered.
+
+## Tasks
+
+### Main
+* Generate building data with params via an endpoint (instead of loading locally).
+* Add user controls to edit individual building height, and re-generate new building data.
+
+### Bonus (if you have the time)
+* Display building meta data, i.e. `name`, `height` and `area`.
+* Display floor meta data, i.e. `level` and `area`.
+* Add edit of building `width` and `roofAngle`.
+
+## Project Setup
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## 3D Rendering
 
-In the project directory, you can run:
+The 3D rendering is handled with [three.js](https://threejs.org/) and a wrapper library [react-three-fiber](https://github.com/react-spring/react-three-fiber).
 
-### `yarn start`
+## Building Data API
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+NOTE: This api a prototype we used to evaluate JavaScript performance and data formats. We do not know of any bugs, but they may still exist. :)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+To generate new building data, make a POST request to `https://87o2eq9h6k.execute-api.eu-west-1.amazonaws.com/dev/build`.
 
-### `yarn test`
+The payload should be a json array where each item is a dictionary with params corresponding to a building that index. The params for each building can contain `height`, `width` and `roofAngle`. If any parameter is missing or null, then default values is used by the api:
+```
+{
+  "width": 10000,
+  "height": 10000,
+  "roofAngle": 30
+}
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The following example request will generate buildings where the first building uses the default value, the second is 30000 mm high, and the rest use the default values.
+```
+curl -X POST -d '[null,{"height":30000}]' https://87o2eq9h6k.execute-api.eu-west-1.amazonaws.com/dev/build
+```
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+The project already contains a local file with pre-generated building data, [buildings.json](./data/buildings.json), which is loaded and rendered at startup in the demo application.
