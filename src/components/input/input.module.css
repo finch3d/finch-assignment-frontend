@@ -1,0 +1,53 @@
+@value input-item, input-item-active, input-item-inactive from "../../shared/colors.css";
+.wrapper {
+  display: flex;
+}
+
+.label {
+  color: input-item-inactive;
+  font-weight: bold;
+  padding-right: 10px;
+  font-size: 18px;
+}
+
+.label:hover {
+  cursor: pointer;
+}
+
+.activeLabel {
+  color: input-item-active;
+}
+
+.input {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  box-shadow: none;
+
+  font-size: 18px;
+  text-align: end;
+  color: input-item;
+}
+
+.input:focus {
+  outline-color: transparent;
+  outline-style: none;
+}
+
+.line {
+  height: 2px;
+  margin-top: 5px;
+  width: auto;
+  background-color: input-item-inactive;
+}
+
+.activeLine {
+  background-color: input-item-active;
+}
+
+.button {
+  margin-left: 10px;
+}
+
+.button:disabled {
+}

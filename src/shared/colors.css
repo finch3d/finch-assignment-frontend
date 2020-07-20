@@ -1,0 +1,22 @@
+@value white: #ffffff;
+@value black: #bfbfbf;
+@value dark-gray: #989898;
+@value soft-violet: #bba5e8;
+@value soft-violet-70: rgba(187, 165, 232, 0.7);
+@value very-dark-gray: #676767;
+@value very-soft-green: #d2e8a5;
+@value very-soft-lime-green: #b1e8a5;
+@value very-soft-yellow: #e8dda5;
+
+@value container-background: very-dark-gray;
+
+@value info-area-background: soft-violet-70;
+@value info-area-text: white;
+
+@value input-item: white;
+@value input-item-inactive: dark-gray;
+@value input-item-active: very-soft-green;
+
+@value panel-title: soft-violet;
+@vale panel-text: white;
+@value panel-inactive: dark-gray;

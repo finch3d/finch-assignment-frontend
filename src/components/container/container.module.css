@@ -1,0 +1,13 @@
+@value container-background from "../../shared/colors.css";
+
+.container {
+  background-color: container-background;
+  padding: 20px;
+  height: 100vh;
+}
+
+.canvasArea {
+  position: relative;
+  height: calc(100vh - 200px);
+  border-radius: 8px;
+}

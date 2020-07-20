@@ -1,0 +1,22 @@
+@value info-area-background, info-area-text from "../../shared/colors.css";
+
+.wrapper {
+  position: absolute;
+  z-index: 1;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  background-color: info-area-background;
+  color: info-area-text;
+  padding: 20px;
+  border-top-left-radius: 8px;
+  font-size: 15px;
+  line-height: 22px;
+  max-width: 200px;
+}
+
+.label {
+  font-weight: bold;
+}
