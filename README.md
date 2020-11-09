@@ -1,6 +1,6 @@
 # Frontend Assignment
 
-## Background
+## Overview
 
 Typically an architect wants to change where buildings are located on a lot. In this assignment this is already fixed.
 
@@ -8,15 +8,15 @@ Additionally they also want to change some of the attributes, e.g. height, width
 
 The sample setup is a project that loads building data from a file locally and renders it in a 3d canvas. Some other sample data is also rendered.
 
-## Project Setup
+### Project Setup
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## 3D Rendering
+### 3D Rendering
 
 The 3D rendering is handled with [three.js](https://threejs.org/) and a wrapper library [react-three-fiber](https://github.com/react-spring/react-three-fiber).
 
-## Building Data API
+### Building Data API
 
 NOTE: This api a prototype we used to evaluate JavaScript performance and data formats. We do not know of any bugs, but they may still exist. :)
 
@@ -51,3 +51,5 @@ Do your changes in a fork of this repo, and then make a pull request when you ar
 * Add display of floor meta data, i.e. `level` and `area`.
 * Add funcitonality to edit of building `width` and `roofAngle`.
 * Add functionality to duplicate the currently selected building.
+
+![](https://media.giphy.com/media/3oKHWikxKFJhjArSXm/giphy.gif)
