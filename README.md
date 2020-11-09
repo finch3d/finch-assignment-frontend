@@ -42,7 +42,7 @@ The project already contains a local file with pre-generated building data, [bui
 
 Do your changes in a fork of this repo, and then make a pull request when you are done.
 
-### Main Task
+### Main Tasks
 * Generate building data with params via an endpoint (instead of loading locally).
 * Add user controls to edit individual building height, and re-generate new building data.
 
