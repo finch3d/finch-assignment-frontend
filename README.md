@@ -47,6 +47,7 @@ Do your changes in a fork of this repo, and then make a pull request when you ar
 * Add user controls to edit individual building height, and re-generate new building data.
 
 ### Bonus Tasks (if you have the time)
-* Display building meta data, i.e. `name`, `height` and `area`.
-* Display floor meta data, i.e. `level` and `area`.
-* Add edit of building `width` and `roofAngle`.
+* Add display of building meta data, i.e. `name`, `height` and `area`.
+* Add display of floor meta data, i.e. `level` and `area`.
+* Add funcitonality to edit of building `width` and `roofAngle`.
+* Add functionality to duplicate the currently selected building.
