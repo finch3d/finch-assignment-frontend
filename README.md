@@ -8,17 +8,6 @@ Additionally they also want to change some of the attributes, e.g. height, width
 
 The sample setup is a project that loads building data from a file locally and renders it in a 3d canvas. Some other sample data is also rendered.
 
-## Tasks
-
-### Main
-* Generate building data with params via an endpoint (instead of loading locally).
-* Add user controls to edit individual building height, and re-generate new building data.
-
-### Bonus (if you have the time)
-* Display building meta data, i.e. `name`, `height` and `area`.
-* Display floor meta data, i.e. `level` and `area`.
-* Add edit of building `width` and `roofAngle`.
-
 ## Project Setup
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -48,3 +37,16 @@ curl -X POST -d '[null,{"height":30000}]' https://87o2eq9h6k.execute-api.eu-west
 ```
 
 The project already contains a local file with pre-generated building data, [buildings.json](./data/buildings.json), which is loaded and rendered at startup in the demo application.
+
+## Assignment
+
+Do your changes in a fork of this repo, and then make a pull request when you are done.
+
+### Main Task
+* Generate building data with params via an endpoint (instead of loading locally).
+* Add user controls to edit individual building height, and re-generate new building data.
+
+### Bonus Tasks (if you have the time)
+* Display building meta data, i.e. `name`, `height` and `area`.
+* Display floor meta data, i.e. `level` and `area`.
+* Add edit of building `width` and `roofAngle`.
