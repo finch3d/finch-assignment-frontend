@@ -51,5 +51,3 @@ Do your changes in a fork of this repo, and then make a pull request when you ar
 * Add display of floor meta data, i.e. `level` and `area`.
 * Add funcitonality to edit of building `width` and `roofAngle`.
 * Add functionality to duplicate the currently selected building.
-
-![](https://media.giphy.com/media/3oKHWikxKFJhjArSXm/giphy.gif)
