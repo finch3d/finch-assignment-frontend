@@ -3,22 +3,9 @@ import * as THREE from "three";
 import { Earcut } from "three/src/extras/Earcut";
 import { Canvas } from "react-three-fiber";
 import CameraControls from "./CameraControls";
+import { loadBuildingData } from "./building-data";
 
 THREE.Object3D.DefaultUp.set(0, 0, 1);
-
-async function loadData() {
-  const response = await fetch(
-    `/buildings.json`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      }
-    },
-  );
-
-  const result = await response.json();
-  return result;
-}
 
 let font;
 async function loadFont() {
@@ -138,13 +125,15 @@ function Group(props) {
   );
 }
 
+const BUILDING_PARAMETERS = [null, { height: 30000 }];
+
 export default function App() {
 
   const [buildingGeometries, setBuildingGeometries] = useState();
   const [sampleGeometries, setSampleGeometries] = useState([]);
 
   useEffect(() => {
-    loadData()
+    loadBuildingData(BUILDING_PARAMETERS)
       .then(data => generateBuildingGeometriesFromData(data))
       .then(geometries => setBuildingGeometries(geometries));
   }, []);
