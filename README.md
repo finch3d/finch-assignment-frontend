@@ -20,7 +20,7 @@ The 3D rendering is handled with [three.js](https://threejs.org/) and a wrapper 
 
 NOTE: This api a prototype we used to evaluate JavaScript performance and data formats. We do not know of any bugs, but they may still exist. :)
 
-To generate new building data, make a POST request to `https://87o2eq9h6k.execute-api.eu-west-1.amazonaws.com/dev/build`.
+To generate new building data, make a POST request to `https://cchvf3mkzi.execute-api.eu-west-1.amazonaws.com/dev/build``.
 
 The payload should be a json array where each item is a dictionary with params corresponding to a building that index. The params for each building can contain `height`, `width` and `roofAngle`. If any parameter is missing or null, then default values is used by the api:
 ```
@@ -33,7 +33,7 @@ The payload should be a json array where each item is a dictionary with params c
 
 The following example request will generate buildings where the first building uses the default value, the second is 30000 mm high, and the rest use the default values.
 ```
-curl -X POST -d '[null,{"height":30000}]' https://87o2eq9h6k.execute-api.eu-west-1.amazonaws.com/dev/build
+curl -X POST -d '[null,{"height":30000}]' https://cchvf3mkzi.execute-api.eu-west-1.amazonaws.com/dev/build`
 ```
 
 The project already contains a local file with pre-generated building data, [buildings.json](./data/buildings.json), which is loaded and rendered at startup in the demo application.
