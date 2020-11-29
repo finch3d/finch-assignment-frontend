@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as THREE from "three";
 import { Earcut } from "three/src/extras/Earcut";
 import { Canvas } from "react-three-fiber";
+import debounce from "lodash/debounce";
 import CameraControls from "./CameraControls";
 import { loadBuildingData } from "./building-data";
+import { BuildingControls } from "./BuildingControls";
+import { Hideable } from "./Hideable";
 
 THREE.Object3D.DefaultUp.set(0, 0, 1);
 
@@ -125,18 +128,42 @@ function Group(props) {
   );
 }
 
-const BUILDING_PARAMETERS = [null, { height: 30000 }];
-
 export default function App() {
-
+  const [selectedBuildingIndex, setSelectedBuildingIndex] = useState();
+  const [buildingParameters, setBuildingParameters] = useState([
+    { width: 10000, height: 10000, roofAngle: 30 },
+    { width: 10000, height: 10000, roofAngle: 30 },
+    { width: 10000, height: 10000, roofAngle: 30 },
+  ]);
   const [buildingGeometries, setBuildingGeometries] = useState();
   const [sampleGeometries, setSampleGeometries] = useState([]);
+  const selectedBuildingParameters =
+    selectedBuildingIndex === undefined ? undefined : buildingParameters[selectedBuildingIndex];
+  const setSelectedBuildingParameters = parameters => {
+    if (selectedBuildingIndex === undefined) {
+      throw new Error("No building selected");
+    }
+    const newBuildingParameters = buildingParameters.slice();
+    newBuildingParameters[selectedBuildingIndex] = parameters;
+    setBuildingParameters(newBuildingParameters);
+  };
+
+  const loadBuildingGeometries = useCallback(
+    debounce(
+      parameters => {
+        loadBuildingData(parameters)
+          .then(data => generateBuildingGeometriesFromData(data))
+          .then(geometries => setBuildingGeometries(geometries));
+      },
+      500,
+      { leading: false, trailing: true },
+    ),
+    [],
+  );
 
   useEffect(() => {
-    loadBuildingData(BUILDING_PARAMETERS)
-      .then(data => generateBuildingGeometriesFromData(data))
-      .then(geometries => setBuildingGeometries(geometries));
-  }, []);
+    loadBuildingGeometries(buildingParameters);
+  }, [loadBuildingGeometries, buildingParameters]);
 
   useEffect(() => {
     loadFont()
@@ -159,33 +186,50 @@ export default function App() {
   }, []);
 
   return (
-    <Canvas style = {{ height: 600 }}
-    camera = {{
-      up: [0, 0, 1],
-      position: [20000, 20000, 20000],
-      near: 1000,
-      far: 400000,
-      fov: 70
-    }}
-    onCreated = {({ gl }) => {
-      gl.setClearColor("#eeeeee");
-    }}>
-      <ambientLight intensity={ 1.0 } />
-      <directionalLight intensity={ 0.2 } position = { [1, 1, 1] } />
-      <Group
-        items={ sampleGeometries }
-      />
-      { buildingGeometries && buildingGeometries.length > 0 &&
-        buildingGeometries.map((buildingGeometry, index) => {
-          return <primitive
-            key={ index }
-            object={ buildingGeometry }
-            onClick={ e => console.log("onClick") }
-            onPointerOver={ e => console.log("onPointerOver") }
-            onPointerOut={ e => console.log("onPointerOut") } />;
-        })
-      }
-      <CameraControls / >
-    </Canvas>
+    <>
+      <Canvas
+        style={{ height: 600 }}
+        camera={{
+          up: [0, 0, 1],
+          position: [20000, 20000, 20000],
+          near: 1000,
+          far: 400000,
+          fov: 70,
+        }}
+        onCreated={({ gl }) => {
+          gl.setClearColor("#eeeeee");
+        }}
+        onPointerMissed={() => {
+          setSelectedBuildingIndex(undefined);
+        }}
+      >
+        <ambientLight intensity={1.0} />
+        <directionalLight intensity={0.2} position={[1, 1, 1]} />
+        <Group items={sampleGeometries} />
+        {buildingGeometries &&
+          buildingGeometries.length > 0 &&
+          buildingGeometries.map((buildingGeometry, index) => {
+            return (
+              <primitive
+                key={index}
+                object={buildingGeometry}
+                onClick={() => {
+                  setSelectedBuildingIndex(index);
+                }}
+                onPointerOver={e => console.log("onPointerOver")}
+                onPointerOut={e => console.log("onPointerOut")}
+              />
+            );
+          })}
+        <CameraControls />
+      </Canvas>
+
+      <Hideable visible={!!selectedBuildingParameters}>
+        <BuildingControls
+          buildingParameters={selectedBuildingParameters}
+          setBuildingParameters={setSelectedBuildingParameters}
+        />
+      </Hideable>
+    </>
   );
 }

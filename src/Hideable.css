@@ -1,0 +1,7 @@
+.Hideable {
+  transition: opacity 0.2s linear;
+}
+
+.Hideable--hidden {
+  opacity: 0;
+}

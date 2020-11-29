@@ -1,0 +1,19 @@
+.BuildingControls {
+  background: var(--uiPrimaryBgColor);
+  border-radius: var(--normalBorderRadius);
+  border-top: 3px solid var(--uiAccentColor);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  color: var(--uiPrimaryFgColor);
+  display: flex;
+  flex-direction: column;
+  padding: var(--baseSpacing);
+  position: fixed;
+  right: calc(var(--baseSpacing) * 2);
+  top: calc(var(--baseSpacing) * 2);
+}
+
+.BuildingControls__label {
+  display: flex;
+  gap: var(--baseSpacing);
+  justify-content: flex-end;
+}
