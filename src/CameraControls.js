@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { useFrame, extend, useThree } from "react-three-fiber";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
@@ -11,9 +11,7 @@ const CameraControls = () => {
     invalidate
   } = useThree();
 
-  function onChange() {
-    invalidate();
-  }
+  const onChange = useCallback(() => invalidate(), [invalidate]);
 
   const controls = useRef();
   useEffect(() => {
