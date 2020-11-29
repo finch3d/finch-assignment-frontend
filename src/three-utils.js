@@ -1,25 +1,35 @@
 import * as THREE from "three";
 import { Earcut } from "three/src/extras/Earcut";
+import { formatArea } from "./format-number";
 
-let font;
+const NEUTRAL_LINE_COLOR = "lightgray";
+const SELECTION_COLOR = "hotpink";
+const TEXT_COLOR = "purple";
+const TEXT_SIZE = 700;
+
+let openSans;
 export async function loadFont() {
-  if (!font) {
+  if (!openSans) {
     return new Promise(resolve => {
       new THREE.FontLoader().load("/OpenSans_Regular.json", resolve);
     }).then(loadedFont => {
-      font = loadedFont;
+      openSans = loadedFont;
 
-      return font;
+      return openSans;
     });
   } else {
-    return font;
+    return openSans;
   }
 }
 
-export function createText(text, color, font, position) {
+export function createText(
+  text,
+  position,
+  { font = openSans, color = TEXT_COLOR, size = TEXT_SIZE } = {},
+) {
   const tGeometry = new THREE.TextGeometry(text, {
-    font: font,
-    size: 2000,
+    font,
+    size,
     height: 10,
     bevelEnabled: false,
     curveSegments: 24,
@@ -61,7 +71,7 @@ export function createPolyline(vertices, color) {
   return tLine;
 }
 
-export function generateGeometriesFromBuildingPart(buildingPart) {
+export function generateGeometriesFromBuildingPart(buildingPart, isSelected) {
   const tBuildingPartGroup = new THREE.Group();
   if (buildingPart.tags.type === "floors") {
     // All floors are grouped
@@ -76,13 +86,22 @@ export function generateGeometriesFromBuildingPart(buildingPart) {
           "gray",
         );
         tBuildingPartGroup.add(tMesh);
+
+        if (isSelected) {
+          const maxPointX = Math.max(...floorPolygon.points.map(point => point.x));
+          const textAnchor = floorPolygon.points.find(point => point.x === maxPointX);
+          const textPosition = [textAnchor.x + 300, textAnchor.y, textAnchor.z];
+          const levelText = `Level ${floorGroup.tags.level} (${formatArea(floorGroup.tags.area)})`;
+          const text = createText(levelText, textPosition);
+          tBuildingPartGroup.add(text);
+        }
       });
     });
   } else {
     buildingPart.items.forEach(polygon => {
       // Create line
       const vertices = polygon.points.map(point => [point.x, point.y, point.z]);
-      const tLine = createPolyline(vertices, "lightgray");
+      const tLine = createPolyline(vertices, isSelected ? SELECTION_COLOR : NEUTRAL_LINE_COLOR);
       tBuildingPartGroup.add(tLine);
     });
   }
@@ -90,11 +109,11 @@ export function generateGeometriesFromBuildingPart(buildingPart) {
   return tBuildingPartGroup;
 }
 
-export function generateBuildingGeometryFromData(building) {
+export function generateBuildingGeometryFromData(building, isSelected) {
   const tBuildingGroup = new THREE.Group();
   // Iterate building parts (roof, walls, base, floors)
   building.items.forEach(buildingPart => {
-    const tBuildingPartGroup = generateGeometriesFromBuildingPart(buildingPart);
+    const tBuildingPartGroup = generateGeometriesFromBuildingPart(buildingPart, isSelected);
     tBuildingGroup.add(tBuildingPartGroup);
   });
 

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as THREE from "three";
 import { Canvas } from "react-three-fiber";
 import debounce from "lodash/debounce";
-import { createPolyline, createText, loadFont } from "./three-utils";
+import { loadFont } from "./three-utils";
 import { loadBuildingData } from "./building-data";
 import CameraControls from "./CameraControls";
 import { BuildingControls } from "./BuildingControls";
@@ -11,20 +11,10 @@ import { Building } from "./Building";
 
 THREE.Object3D.DefaultUp.set(0, 0, 1);
 
-function Group(props) {
-  return (
-    <group {...props}>
-      { props.items &&
-        props.items.map((tObject, index) => {
-          return <primitive key={ index } object={ tObject } />;
-        })
-      }
-    </group>
-  );
-}
+loadFont();
 
 export default function App() {
-  const [showBuildingControls, setShowBuildingControls] = useState(false);
+  const [isBuildingSelected, setIsBuildingSelected] = useState(false);
   const [selectedBuildingIndex, setSelectedBuildingIndex] = useState(0);
   const [buildingParameters, setBuildingParameters] = useState([
     { width: 10000, height: 10000, roofAngle: 30 },
@@ -32,7 +22,6 @@ export default function App() {
     { width: 10000, height: 10000, roofAngle: 30 },
   ]);
   const [buildingData, setBuildingData] = useState();
-  const [sampleGeometries, setSampleGeometries] = useState([]);
   const selectedBuildingParameters = buildingParameters[selectedBuildingIndex];
   const selectedBuildingData = buildingData && buildingData.items[selectedBuildingIndex];
   const setSelectedBuildingParameters = parameters => {
@@ -53,26 +42,6 @@ export default function App() {
     reloadBuildingData(buildingParameters);
   }, [reloadBuildingData, buildingParameters]);
 
-  useEffect(() => {
-    loadFont()
-      .then(font => {
-        // Sample threejs objects
-        setSampleGeometries([
-          createPolyline(
-            [
-              [0, 10000, 0],
-              [10000, 10000, 0],
-              [10000, 10000, 10000],
-              [0, 10000, 10000],
-              [0, 10000, 0]
-            ],
-            "hotpink"
-          ),
-          createText("sample", "purple", font, [0, 10000, 10000])
-        ]);
-      });
-  }, []);
-
   return (
     <>
       <Canvas
@@ -88,12 +57,11 @@ export default function App() {
           gl.setClearColor("#eeeeee");
         }}
         onPointerMissed={() => {
-          setShowBuildingControls(false);
+          setIsBuildingSelected(false);
         }}
       >
         <ambientLight intensity={1.0} />
         <directionalLight intensity={0.2} position={[1, 1, 1]} />
-        <Group items={sampleGeometries} />
         {buildingData &&
           buildingData.items &&
           buildingData.items.length > 0 &&
@@ -102,9 +70,10 @@ export default function App() {
               <Building
                 key={index}
                 buildingData={data}
+                isSelected={isBuildingSelected && selectedBuildingIndex === index}
                 onSelect={() => {
                   setSelectedBuildingIndex(index);
-                  setShowBuildingControls(true);
+                  setIsBuildingSelected(true);
                 }}
               />
             );
@@ -112,7 +81,7 @@ export default function App() {
         <CameraControls />
       </Canvas>
 
-      <Hideable visible={showBuildingControls}>
+      <Hideable visible={isBuildingSelected}>
         <BuildingControls
           buildingParameters={selectedBuildingParameters}
           setBuildingParameters={setSelectedBuildingParameters}

@@ -1,4 +1,5 @@
 import React from "react";
+import { formatArea } from "./format-number";
 import "./BuildingControls.css";
 
 export function BuildingControls({ buildingParameters, setBuildingParameters, buildingData }) {
@@ -57,8 +58,7 @@ export function BuildingControls({ buildingParameters, setBuildingParameters, bu
 
       {buildingData && (
         <div className="BuildingControls__data">
-          Total area: {new Intl.NumberFormat().format(buildingData.tags.area / 1000000)} m
-          <sup>2</sup>
+          Total area: {formatArea(buildingData.tags.area)}
         </div>
       )}
     </div>
