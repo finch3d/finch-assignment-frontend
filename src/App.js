@@ -2,16 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as THREE from "three";
 import { Canvas } from "react-three-fiber";
 import debounce from "lodash/debounce";
-import {
-  createPolyline,
-  createText,
-  generateBuildingGeometriesFromData,
-  loadFont,
-} from "./three-utils";
+import { createPolyline, createText, loadFont } from "./three-utils";
 import { loadBuildingData } from "./building-data";
 import CameraControls from "./CameraControls";
 import { BuildingControls } from "./BuildingControls";
 import { Hideable } from "./Hideable";
+import { Building } from "./Building";
 
 THREE.Object3D.DefaultUp.set(0, 0, 1);
 
@@ -28,41 +24,34 @@ function Group(props) {
 }
 
 export default function App() {
-  const [selectedBuildingIndex, setSelectedBuildingIndex] = useState();
+  const [showBuildingControls, setShowBuildingControls] = useState(false);
+  const [selectedBuildingIndex, setSelectedBuildingIndex] = useState(0);
   const [buildingParameters, setBuildingParameters] = useState([
     { width: 10000, height: 10000, roofAngle: 30 },
     { width: 10000, height: 10000, roofAngle: 30 },
     { width: 10000, height: 10000, roofAngle: 30 },
   ]);
-  const [buildingGeometries, setBuildingGeometries] = useState();
+  const [buildingData, setBuildingData] = useState();
   const [sampleGeometries, setSampleGeometries] = useState([]);
-  const selectedBuildingParameters =
-    selectedBuildingIndex === undefined ? undefined : buildingParameters[selectedBuildingIndex];
+  const selectedBuildingParameters = buildingParameters[selectedBuildingIndex];
+  const selectedBuildingData = buildingData && buildingData.items[selectedBuildingIndex];
   const setSelectedBuildingParameters = parameters => {
-    if (selectedBuildingIndex === undefined) {
-      throw new Error("No building selected");
-    }
     const newBuildingParameters = buildingParameters.slice();
     newBuildingParameters[selectedBuildingIndex] = parameters;
     setBuildingParameters(newBuildingParameters);
   };
 
-  const loadBuildingGeometries = useCallback(
-    debounce(
-      parameters => {
-        loadBuildingData(parameters)
-          .then(data => generateBuildingGeometriesFromData(data))
-          .then(geometries => setBuildingGeometries(geometries));
-      },
-      500,
-      { leading: false, trailing: true },
-    ),
+  const reloadBuildingData = useCallback(
+    debounce(parameters => loadBuildingData(parameters).then(data => setBuildingData(data)), 500, {
+      leading: false,
+      trailing: true,
+    }),
     [],
   );
 
   useEffect(() => {
-    loadBuildingGeometries(buildingParameters);
-  }, [loadBuildingGeometries, buildingParameters]);
+    reloadBuildingData(buildingParameters);
+  }, [reloadBuildingData, buildingParameters]);
 
   useEffect(() => {
     loadFont()
@@ -99,34 +88,35 @@ export default function App() {
           gl.setClearColor("#eeeeee");
         }}
         onPointerMissed={() => {
-          setSelectedBuildingIndex(undefined);
+          setShowBuildingControls(false);
         }}
       >
         <ambientLight intensity={1.0} />
         <directionalLight intensity={0.2} position={[1, 1, 1]} />
         <Group items={sampleGeometries} />
-        {buildingGeometries &&
-          buildingGeometries.length > 0 &&
-          buildingGeometries.map((buildingGeometry, index) => {
+        {buildingData &&
+          buildingData.items &&
+          buildingData.items.length > 0 &&
+          buildingData.items.map((data, index) => {
             return (
-              <primitive
+              <Building
                 key={index}
-                object={buildingGeometry}
-                onClick={() => {
+                buildingData={data}
+                onSelect={() => {
                   setSelectedBuildingIndex(index);
+                  setShowBuildingControls(true);
                 }}
-                onPointerOver={e => console.log("onPointerOver")}
-                onPointerOut={e => console.log("onPointerOut")}
               />
             );
           })}
         <CameraControls />
       </Canvas>
 
-      <Hideable visible={!!selectedBuildingParameters}>
+      <Hideable visible={showBuildingControls}>
         <BuildingControls
           buildingParameters={selectedBuildingParameters}
           setBuildingParameters={setSelectedBuildingParameters}
+          buildingData={selectedBuildingData}
         />
       </Hideable>
     </>

@@ -1,9 +1,12 @@
 import React from "react";
 import "./BuildingControls.css";
 
-export function BuildingControls({ buildingParameters, setBuildingParameters }) {
+export function BuildingControls({ buildingParameters, setBuildingParameters, buildingData }) {
+  const buildingName = buildingData ? buildingData.tags.name : "";
+
   return (
     <div className="BuildingControls">
+      <h2 className="BuildingControls__heading">Building "{buildingName}"</h2>
       <label className="BuildingControls__label">
         Width:
         <input
@@ -51,6 +54,13 @@ export function BuildingControls({ buildingParameters, setBuildingParameters }) 
           }
         />
       </label>
+
+      {buildingData && (
+        <div className="BuildingControls__data">
+          Total area: {new Intl.NumberFormat().format(buildingData.tags.area / 1000000)} m
+          <sup>2</sup>
+        </div>
+      )}
     </div>
   );
 }

@@ -90,18 +90,13 @@ export function generateGeometriesFromBuildingPart(buildingPart) {
   return tBuildingPartGroup;
 }
 
-export function generateBuildingGeometriesFromData(data) {
-  // Iterate buildings, convert each building into a group of lines
-  const buildingGeometries = data.items.map(building => {
-    const tBuildingGroup = new THREE.Group();
-    // Iterate building parts (roof, walls, base, floors)
-    building.items.forEach(buildingPart => {
-      const tBuildingPartGroup = generateGeometriesFromBuildingPart(buildingPart);
-      tBuildingGroup.add(tBuildingPartGroup);
-    });
-
-    return tBuildingGroup;
+export function generateBuildingGeometryFromData(building) {
+  const tBuildingGroup = new THREE.Group();
+  // Iterate building parts (roof, walls, base, floors)
+  building.items.forEach(buildingPart => {
+    const tBuildingPartGroup = generateGeometriesFromBuildingPart(buildingPart);
+    tBuildingGroup.add(tBuildingPartGroup);
   });
 
-  return buildingGeometries;
+  return tBuildingGroup;
 }

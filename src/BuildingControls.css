@@ -12,8 +12,22 @@
   top: calc(var(--baseSpacing) * 2);
 }
 
+.BuildingControls__heading {
+  border-bottom: var(--uiSeparator);
+  font-size: inherit;
+  font-weight: bold;
+  margin: 0 0 var(--baseSpacing) 0;
+  padding: 0 0 var(--baseSpacing) 0;
+}
+
 .BuildingControls__label {
   display: flex;
   gap: var(--baseSpacing);
   justify-content: flex-end;
+}
+
+.BuildingControls__data {
+  border-top: var(--uiSeparator);
+  margin-top: var(--baseSpacing);
+  padding-top: var(--baseSpacing);
 }

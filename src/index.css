@@ -4,6 +4,7 @@
   --uiAccentColor: #bba5d8;
   --uiPrimaryBgColor: #ffffff;
   --uiPrimaryFgColor: #535353;
+  --uiSeparator: 1px dashed #dddddd;
 }
 
 body {
