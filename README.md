@@ -2,11 +2,9 @@
 
 ## Overview
 
-Typically an architect wants to change where buildings are located on a lot. In this assignment this is already fixed.
+An architect wants to change some of the attributes of a building, e.g. height, width and roof angle. In association with this they want to see the meta data of the buildings, e.g. name, height and floor area.
 
-Additionally they also want to change some of the attributes, e.g. height, width and roof angle. In association with this they want to see the meta data of the buildings, e.g. name, height and floor area.
-
-The sample setup is a project that loads building data from a file locally and renders it in a 3d canvas. Some other sample data is also rendered.
+The sample setup is a project that loads building data from a file locally and renders it in a 3D canvas. Some other sample data is also rendered.
 
 ### Project Setup
 
@@ -49,5 +47,5 @@ Do your changes in a fork of this repo, and then make a pull request when you ar
 ### Bonus Tasks (if you have the time)
 * Add display of building meta data, i.e. `name`, `height` and `area`.
 * Add display of floor meta data, i.e. `level` and `area`.
-* Add funcitonality to edit of building `width` and `roofAngle`.
+* Add functionality to edit of building `width` and `roofAngle`.
 * Add functionality to duplicate the currently selected building.
