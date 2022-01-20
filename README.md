@@ -38,7 +38,7 @@ The project already contains a local file with pre-generated building data, [bui
 
 ## Assignment
 
-Do your changes in a fork of this repo, and then make a pull request when you are done.
+Do your changes in a fork of this repo, and then send a link to that repo when you are done.
 
 ### Main Tasks
 * Generate building data with params via an endpoint (instead of loading locally).
