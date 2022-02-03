@@ -46,6 +46,5 @@ Do your changes in a fork of this repo, and then send a link to that repo when y
 
 ### Bonus Tasks (if you have the time)
 * Add display of building meta data, i.e. `name`, `height` and `area`.
-* Add display of floor meta data, i.e. `level` and `area`.
+* Add display of floor meta data, i.e. `level` and `area`, in HTML or 3D canvas.
 * Add functionality to edit of building `width` and `roofAngle`.
-* Add functionality to duplicate the currently selected building.
